@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Announcement - EduBeacon</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
+    body{background:#f0f0f8;color:#1a1a2e;}
+    /* SIDEBAR */
+    .sidebar{position:fixed;left:0;top:0;width:248px;height:100vh;background:linear-gradient(180deg,#5b3cc4,#7b5be7);color:#fff;padding:22px 16px;display:flex;flex-direction:column;}
+    .logo{text-align:center;font-size:24px;font-weight:800;margin-bottom:36px;letter-spacing:.5px;}
+    .logo span{color:#dcd2ff;}
+    .menu{list-style:none;}
+    .menu li{margin:6px 0;}
+    .menu a{display:block;padding:13px 16px;text-decoration:none;color:#dcd2ff;border-radius:10px;font-size:14px;transition:.25s;}
+    .menu a:hover,.menu a.active{background:rgba(255,255,255,.18);color:#fff;transform:translateX(3px);}
+    .logout{margin-top:auto;}
+    .logout a{background:rgba(255,255,255,.12);}
+    /* MAIN */
+    .main{margin-left:248px;padding:36px 48px;min-height:100vh;}
+    .page-header{margin-bottom:30px;}
+    .page-header h1{font-size:26px;font-weight:800;margin-bottom:6px;color:#1a1a2e;}
+    .page-header p{color:#888;font-size:13px;}
+    /* FORM CARD */
+    .form-card{background:#fff;border-radius:20px;padding:36px;box-shadow:0 8px 32px rgba(0,0,0,.08);max-width:720px;}
+    .form-group{margin-bottom:22px;}
+    label{display:block;font-size:13px;font-weight:700;color:#444;margin-bottom:8px;letter-spacing:.2px;}
+    label .req{color:#e53935;margin-left:2px;}
+    input[type=text],input[type=date],textarea,select{
+      width:100%;padding:12px 16px;border:1.5px solid #e0ddf5;border-radius:10px;
+      font-size:14px;outline:none;transition:.25s;background:#fafafa;color:#1a1a2e;}
+    input:focus,textarea:focus,select:focus{border-color:#6542df;background:#fff;box-shadow:0 0 0 3px rgba(101,66,223,.1);}
+    textarea{resize:vertical;min-height:100px;}
+    .row-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+    /* PREVIEW BOX */
+    .preview-box{background:#f5f0ff;border:1.5px solid #c5b8f0;border-radius:14px;padding:20px;margin-top:24px;display:none;}
+    .preview-box h3{font-size:14px;font-weight:800;margin-bottom:12px;color:#5b3cc4;}
+    .score-label{font-size:13px;font-weight:700;margin-bottom:8px;}
+    .meter-track{background:#e8e4f5;border-radius:20px;height:12px;overflow:hidden;margin-bottom:8px;}
+    .meter-fill{height:100%;border-radius:20px;transition:width .6s;}
+    .meter-fill.Critical{background:linear-gradient(90deg,#e53935,#f44336);}
+    .meter-fill.High{background:linear-gradient(90deg,#fb8c00,#ffa726);}
+    .meter-fill.Medium{background:linear-gradient(90deg,#f9a825,#fdd835);}
+    .meter-fill.Low{background:linear-gradient(90deg,#43a047,#66bb6a);}
+    .preview-label{display:inline-block;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700;margin-top:4px;}
+    .preview-label.Critical{background:#ffe0e0;color:#c0392b;}
+    .preview-label.High{background:#fff3dc;color:#b7420a;}
+    .preview-label.Medium{background:#fffde0;color:#9a7a00;}
+    .preview-label.Low{background:#e0ffe8;color:#1a7a3c;}
+    .preview-reason{font-size:12px;color:#666;margin-top:10px;font-style:italic;}
+    /* SUBMIT */
+    .submit-btn{width:100%;padding:14px;background:linear-gradient(135deg,#6542df,#8b5cf6);color:#fff;border:none;
+      border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;transition:.25s;letter-spacing:.3px;}
+    .submit-btn:hover{opacity:.9;box-shadow:0 6px 20px rgba(101,66,223,.35);transform:translateY(-1px);}
+    .back-link{display:inline-flex;align-items:center;gap:6px;margin-top:20px;color:#6542df;font-size:13px;font-weight:600;text-decoration:none;}
+    .back-link:hover{text-decoration:underline;}
+    .hint{font-size:11px;color:#aaa;margin-top:5px;}
+    /* SEMESTER MULTI-SELECT CHIPS */
+    .sem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px;}
+    .sem-chip{display:flex;align-items:center;justify-content:center;}
+    .sem-chip input[type=checkbox]{display:none;}
+    .sem-chip span{display:flex;align-items:center;justify-content:center;padding:7px 4px;border-radius:8px;border:1.5px solid #d5ccf5;background:#f9f7ff;color:#5b3cc4;font-size:12px;font-weight:700;cursor:pointer;width:100%;transition:.2s;user-select:none;}
+    .sem-chip input[type=checkbox]:checked + span{background:linear-gradient(135deg,#6542df,#8b5cf6);color:#fff;border-color:transparent;box-shadow:0 3px 10px rgba(101,66,223,.35);}
+    .sem-chip span:hover{border-color:#6542df;background:#ede9ff;}
+    .sem-all-row{display:flex;align-items:center;gap:6px;font-size:12px;color:#666;font-weight:500;cursor:pointer;margin-bottom:4px;}
+    .sem-all-row input[type=checkbox]{width:14px;height:14px;accent-color:#6542df;cursor:pointer;}
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">Edu<span>Beacon</span></div>
+    <ul class="menu">
+      <li><a href="{{ url_for('faculty_dashboard') }}">🏠 Dashboard</a></li>
+      <li><a href="{{ url_for('faculty_add_assignment') }}">📝 Add Assignment</a></li>
+      <li><a href="{{ url_for('faculty_add_examination') }}">📚 Add Examination</a></li>
+      <li><a href="{{ url_for('faculty_add_announcement') }}" class="active">📢 Add Announcement</a></li>
+      <li><a href="{{ url_for('faculty_add_note') }}">📖 Add Study Notes</a></li>
+      <li><a href="{{ url_for('logout') }}">🚪 Logout</a></li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <div class="page-header">
+      <h1>📢 Add Announcement</h1>
+      <p>Smart Priority Score is auto-calculated from type + deadline + urgency.</p>
+    </div>
+
+    <div class="form-card">
+      <form method="POST" id="annForm">
+
+        <div class="form-group">
+          <label>Title <span class="req">*</span></label>
+          <input type="text" name="title" id="annTitle" placeholder="e.g. CIE-2 Timetable Released" required oninput="updatePreview()">
+        </div>
+
+        <div class="form-group">
+          <label>Message <span class="req">*</span></label>
+          <textarea name="message" placeholder="Announcement details..." required></textarea>
+        </div>
+
+        <div class="row-2">
+          <div class="form-group">
+            <label>Announcement Type <span class="req">*</span></label>
+            <select name="type" id="annType" onchange="updatePreview()">
+              <option value="General">📋 General</option>
+              <option value="Exam">📝 Exam</option>
+              <option value="Assignment">📅 Assignment</option>
+              <option value="Fee">💰 Fee</option>
+              <option value="Placement">🏢 Placement</option>
+              <option value="Workshop">🎓 Workshop / Seminar</option>
+              <option value="Event">🎉 Event</option>
+              <option value="Circular">📌 Circular</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Deadline (optional)</label>
+            <input type="date" name="deadline" id="annDeadline" onchange="updatePreview()">
+            <div class="hint">Leave blank if no deadline. Priority rises as deadline approaches.</div>
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="form-group">
+            <label>Department</label>
+            <select name="department">
+              <option value="{{ session.get('department', 'All') }}" selected>
+                🏢 My Department — {{ session.get('department', 'All') }} (default)
+              </option>
+              <option value="All">All Departments</option>
+              <option value="ISE">ISE</option>
+              <option value="CSE">CSE</option>
+              <option value="ECE">ECE</option>
+              <option value="EEE">EEE</option>
+              <option value="ME">ME</option>
+              <option value="CV">CIVIL</option>
+            </select>
+            <div class="hint">Defaults to your department. Change only if needed.</div>
+          </div>
+          <div class="form-group">
+            <label>Semester</label>
+            <div class="sem-grid">
+              <label class="sem-chip"><input type="checkbox" name="semester" value="1"><span>Sem 1</span></label>
+              <label class="sem-chip"><input type="checkbox" name="semester" value="2"><span>Sem 2</span></label>
+              <label class="sem-chip"><input type="checkbox" name="semester" value="3"><span>Sem 3</span></label>
+              <label class="sem-chip"><input type="checkbox" name="semester" value="4"><span>Sem 4</span></label>
+              <label class="sem-chip"><input type="checkbox" name="semester" value="5"><span>Sem 5</span></label>
+              <label class="sem-chip"><input type="checkbox" name="semester" value="6"><span>Sem 6</span></label>
+              <label class="sem-chip"><input type="checkbox" name="semester" value="7"><span>Sem 7</span></label>
+              <label class="sem-chip"><input type="checkbox" name="semester" value="8"><span>Sem 8</span></label>
+            </div>
+            <label class="sem-all-row"><input type="checkbox" id="semAll"> Target All Semesters</label>
+            <div class="hint">Select one or more semesters, or check "All".</div>
+          </div>
+        </div>
+
+        <!-- LIVE PREVIEW -->
+        <div class="preview-box" id="previewBox">
+          <h3>🎯 Smart Priority Preview</h3>
+          <div class="score-label">Score: <strong id="previewScore">-</strong>/100 — <span id="previewLabel">-</span></div>
+          <div class="meter-track"><div class="meter-fill Low" id="meterFill" style="width:0%"></div></div>
+          <span class="preview-label Low" id="previewBadge">-</span>
+          <div class="preview-reason" id="previewReason"></div>
+        </div>
+
+        <button type="submit" class="submit-btn">📢 Publish Announcement</button>
+      </form>
+
+      <a href="{{ url_for('faculty_dashboard') }}" class="back-link">← Back to Dashboard</a>
+    </div>
+  </div>
+
+  <script>
+    const typeScores = {Exam:40,Assignment:30,Fee:35,Placement:25,Workshop:15,Event:10,Circular:20,General:5};
+    const typeReasons = {Exam:'Exam-related announcement',Assignment:'Assignment deadline notice',Fee:'Fee-related notice',Placement:'Placement opportunity',Workshop:'Workshop / seminar notice',Event:'College event notice',Circular:'Official circular',General:'General information'};
+
+    function deadlineScore(dateStr) {
+      if (!dateStr) return {score:0, reason:''};
+      var today = new Date(); today.setHours(0,0,0,0);
+      var dl = new Date(dateStr);
+      var days = Math.round((dl - today) / 86400000);
+      if (days < 0) return {score:0, reason:'Deadline has passed'};
+      if (days === 0) return {score:50, reason:'Deadline is today'};
+      if (days === 1) return {score:45, reason:'Deadline is tomorrow'};
+      if (days <= 3) return {score:35, reason:'Deadline in '+days+' days'};
+      if (days <= 7) return {score:20, reason:'Deadline in '+days+' days'};
+      if (days <= 14) return {score:10, reason:'Deadline in '+days+' days'};
+      return {score:5, reason:'Deadline in '+days+' days'};
+    }
+
+    function updatePreview() {
+      var type = document.getElementById('annType').value;
+      var deadline = document.getElementById('annDeadline').value;
+      var ts = typeScores[type] || 5;
+      var dl = deadlineScore(deadline);
+      var score = Math.min(100, ts + dl.score + 10);
+      var label = score >= 80 ? 'Critical' : score >= 60 ? 'High' : score >= 40 ? 'Medium' : 'Low';
+      var reasons = [typeReasons[type] || 'General'];
+      if (dl.reason) reasons.push(dl.reason);
+
+      document.getElementById('previewBox').style.display = 'block';
+      document.getElementById('previewScore').textContent = score;
+      document.getElementById('previewLabel').textContent = label;
+      document.getElementById('meterFill').style.width = score + '%';
+      document.getElementById('meterFill').className = 'meter-fill ' + label;
+      document.getElementById('previewBadge').textContent = label + ' Priority';
+      document.getElementById('previewBadge').className = 'preview-label ' + label;
+      document.getElementById('previewReason').textContent = '💡 ' + reasons.join('. ');
+    }
+
+    // Trigger on load
+    updatePreview();
+
+    // Semester multi-select logic
+    var semAll    = document.getElementById('semAll');
+    var semChecks = document.querySelectorAll('.sem-chip input[type="checkbox"]');
+    var annForm   = document.getElementById('annForm');
+
+    semAll.addEventListener('change', function() {
+      semChecks.forEach(function(cb) {
+        cb.disabled = semAll.checked;
+        if (semAll.checked) cb.checked = false;
+      });
+    });
+
+    semChecks.forEach(function(cb) {
+      cb.addEventListener('change', function() {
+        var allTicked = Array.from(semChecks).every(function(c){ return c.checked; });
+        if (allTicked) {
+          semAll.checked = true;
+          semChecks.forEach(function(c){ c.checked = false; c.disabled = true; });
+        }
+      });
+    });
+
+    annForm.addEventListener('submit', function() {
+      var anyChecked = Array.from(semChecks).some(function(c){ return c.checked && !c.disabled; });
+      if (semAll.checked || !anyChecked) {
+        semChecks.forEach(function(c){ c.disabled = true; });
+        var h = document.createElement('input');
+        h.type = 'hidden'; h.name = 'semester'; h.value = 'All';
+        annForm.appendChild(h);
+      }
+    });
+  </script>
+</body>
+</html>

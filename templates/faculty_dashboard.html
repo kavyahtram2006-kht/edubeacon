@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard - EduBeacon</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f5ff;
+        }
+
+        header {
+            background: linear-gradient(135deg, #5145cd, #8175ed);
+            color: white;
+            padding: 25px 40px;
+        }
+
+        header h1 {
+            font-size: 28px;
+        }
+
+        header p {
+            margin-top: 8px;
+        }
+
+        .container {
+            padding: 40px;
+        }
+
+        .container h2 {
+            color: #29245e;
+            margin-bottom: 10px;
+        }
+
+        .container > p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            text-decoration: none;
+            color: #29245e;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .card h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: #777;
+            line-height: 1.5;
+        }
+
+        .logout {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            background: #5145cd;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>EduBeacon</h1>
+    <p>Faculty Dashboard</p>
+</header>
+
+<div class="container">
+
+    <h2>Welcome, Faculty!</h2>
+    <p>Select a section to manage academic information.</p>
+
+    <div class="cards">
+
+        <a href="{{ url_for('faculty_add_assignment') }}" class="card">
+            <h3>📚 Assignment</h3>
+            <p>Manage and publish student assignments.</p>
+        </a>
+
+        <a href="{{ url_for('faculty_add_examination') }}" class="card">
+            <h3>📝 Examination</h3>
+            <p>Manage examination schedules and details.</p>
+        </a>
+
+        <a href="{{ url_for('faculty_add_announcement') }}" class="card">
+            <h3>📢 Announcement</h3>
+            <p>Publish important academic announcements.</p>
+        </a>
+
+        <a href="{{ url_for('faculty_add_note') }}" class="card">
+            <h3>📖 Study Notes</h3>
+            <p>Upload and manage study materials.</p>
+        </a>
+
+    </div>
+
+    <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+
+</div>
+
+</body>
+</html>

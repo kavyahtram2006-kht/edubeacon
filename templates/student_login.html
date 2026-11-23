@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Login - EduBeacon</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f3efff, #ffffff, #eee9ff);
+            color: #252331;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            height: 75px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #5b35d5;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6d4aff, #8b5cf6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .home-link {
+            text-decoration: none;
+            color: #555;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .home-link:hover {
+            color: #6542df;
+        }
+
+        /* LOGIN SECTION */
+
+        .login-section {
+            min-height: calc(100vh - 75px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 950px;
+            min-height: 540px;
+            background: white;
+            border-radius: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(64, 43, 130, 0.15);
+        }
+
+        /* LEFT SIDE */
+
+        .login-left {
+            background: linear-gradient(145deg, #6542df, #8062e8);
+            color: white;
+            padding: 55px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-left::before {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            top: -80px;
+            right: -80px;
+        }
+
+        .login-left::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+            bottom: -70px;
+            left: -60px;
+        }
+
+        .welcome-icon {
+            width: 75px;
+            height: 75px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin-bottom: 25px;
+        }
+
+        .login-left h1 {
+            font-size: 36px;
+            margin-bottom: 18px;
+            line-height: 1.2;
+        }
+
+        .login-left p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #eeeaff;
+            max-width: 380px;
+        }
+
+        .benefits {
+            margin-top: 30px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 13px;
+            font-size: 14px;
+        }
+
+        .check {
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.16);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* RIGHT SIDE */
+
+        .login-right {
+            padding: 55px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-right h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
+            color: #292633;
+        }
+
+        .login-subtitle {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        /* FORM */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #393541;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 17px;
+            color: #8b849c;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 50px;
+            padding: 0 15px 0 45px;
+            border: 1px solid #ddd9e8;
+            border-radius: 11px;
+            outline: none;
+            font-size: 14px;
+            color: #333;
+            transition: 0.3s;
+            background: #faf9fd;
+        }
+
+        .form-group input:focus {
+            border-color: #6542df;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(101, 66, 223, 0.08);
+        }
+
+        .form-group input::placeholder {
+            color: #aaa5b2;
+        }
+
+        /* SHOW / HIDE PASSWORD BUTTON */
+
+        #password {
+            padding-right: 48px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 2;
+        }
+
+        /* LOGIN BUTTON */
+
+        .login-button {
+            width: 100%;
+            height: 51px;
+            border: none;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #6542df, #7654e5);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(101, 66, 223, 0.25);
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(101, 66, 223, 0.3);
+        }
+
+        /* REGISTER */
+
+        .register-text {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .register-text a {
+            color: #6542df;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .register-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* ERROR MESSAGE */
+
+        .message {
+            padding: 11px 14px;
+            border-radius: 9px;
+            background: #fff0f0;
+            color: #d33;
+            font-size: 13px;
+            margin-bottom: 18px;
+            border: 1px solid #ffd4d4;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 800px) {
+
+            .login-container {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+
+            .login-left {
+                padding: 40px 35px;
+                min-height: 300px;
+            }
+
+            .login-left h1 {
+                font-size: 30px;
+            }
+
+            .benefits {
+                display: none;
+            }
+
+            .login-right {
+                padding: 40px 35px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            nav {
+                padding: 0 5%;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .login-section {
+                padding: 25px 15px;
+            }
+
+            .login-left {
+                padding: 35px 25px;
+            }
+
+            .login-right {
+                padding: 35px 25px;
+            }
+
+            .login-right h2 {
+                font-size: 26px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🔔
+            </div>
+
+            EduBeacon
+
+        </div>
+
+        <a href="{{ url_for('home') }}" class="home-link">
+            ← Back to Home
+        </a>
+
+    </nav>
+
+    <!-- LOGIN SECTION -->
+
+    <section class="login-section">
+
+        <div class="login-container">
+
+            <!-- LEFT SIDE -->
+
+            <div class="login-left">
+
+                <div class="welcome-icon">
+                    🎓
+                </div>
+
+                <h1>
+                    Welcome Back!
+                </h1>
+
+                <p>
+                    Login to your EduBeacon student account and
+                    stay updated with all your important academic
+                    activities.
+                </p>
+
+                <div class="benefits">
+
+                    <div class="benefit">
+                        <div class="check">✓</div>
+                        View assignments and deadlines
+                    </div>
+
+                    <div class="benefit">
+                        <div class="check">✓</div>
+                        Check upcoming examinations
+                    </div>
+
+                    <div class="benefit">
+                        <div class="check">✓</div>
+                        Read important announcements
+                    </div>
+
+                    <div class="benefit">
+                        <div class="check">✓</div>
+                        Download study notes
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+
+            <div class="login-right">
+
+                <h2>
+                    Student Login
+                </h2>
+
+                <p class="login-subtitle">
+                    Enter your details to access your dashboard.
+                </p>
+
+                <!-- ERROR MESSAGE -->
+
+                {% if message %}
+
+                    <div class="message">
+                        {{ message }}
+                    </div>
+
+                {% endif %}
+
+                <!-- LOGIN FORM -->
+
+                <form method="POST">
+
+                    <!-- USERNAME -->
+
+                    <div class="form-group">
+
+                        <label for="username">
+                            Student Name
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                👤
+                            </span>
+
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Enter your name"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                🔒
+                            </span>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                onclick="togglePassword()"
+                                aria-label="Show password"
+                                title="Show password"
+                            >
+                                👁️
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- LOGIN BUTTON -->
+
+                    <button
+                        type="submit"
+                        class="login-button"
+                    >
+                        Login to EduBeacon →
+                    </button>
+
+                </form>
+
+                <!-- REGISTER -->
+
+                <div class="register-text">
+
+                    Don't have an account?
+
+                    <a href="{{ url_for('student_register') }}">
+                        Create Account
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- SHOW / HIDE PASSWORD SCRIPT -->
+
+    <script>
+        function togglePassword() {
+
+            const password = document.getElementById("password");
+            const button = document.querySelector(".toggle-password");
+
+            if (password.type === "password") {
+
+                password.type = "text";
+                button.textContent = "🙈";
+                button.setAttribute("aria-label", "Hide password");
+                button.setAttribute("title", "Hide password");
+
+            } else {
+
+                password.type = "password";
+                button.textContent = "👁️";
+                button.setAttribute("aria-label", "Show password");
+                button.setAttribute("title", "Show password");
+
+            }
+
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CR Login - EduBeacon</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f6f4ff;
+        }
+
+        .navbar {
+            height: 70px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #6544d3;
+        }
+
+        .logo span {
+            color: #29233f;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #6544d3;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .container {
+            min-height: calc(100vh - 70px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .login-box {
+            width: 950px;
+            max-width: 100%;
+            min-height: 560px;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            box-shadow: 0 15px 50px rgba(80, 50, 160, 0.12);
+        }
+
+        .left {
+            background: linear-gradient(135deg, #5b3cc4, #8a69e8);
+            color: white;
+            padding: 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .left h1 {
+            font-size: 38px;
+            margin-bottom: 18px;
+        }
+
+        .left p {
+            color: #eee9ff;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .benefit {
+            margin: 14px 0;
+            font-size: 15px;
+        }
+
+        .right {
+            padding: 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .right h2 {
+            font-size: 30px;
+            color: #29233f;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #6544d3;
+            box-shadow: 0 0 0 3px rgba(101,68,211,0.1);
+        }
+
+        input.error-field {
+            border-color: #c62828;
+            box-shadow: 0 0 0 3px rgba(198,40,40,0.1);
+        }
+
+        /* SHOW / HIDE PASSWORD */
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 48px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 19px;
+            padding: 3px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #6544d3;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 5px;
+        }
+
+        .login-btn:hover {
+            background: #5033b5;
+            transform: translateY(-2px);
+        }
+
+        .register-text {
+            text-align: center;
+            margin-top: 25px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .register-text a {
+            color: #6544d3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .error-msg {
+            background: #ffe9e9;
+            color: #c62828;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            border-left: 4px solid #c62828;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media (max-width: 750px) {
+            .login-box {
+                grid-template-columns: 1fr;
+            }
+
+            .left {
+                padding: 40px;
+            }
+
+            .right {
+                padding: 40px;
+            }
+
+            .left h1 {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            Edu<span>Beacon</span>
+        </div>
+
+        <a href="{{ url_for('home') }}" class="back">
+            ← Back to Home
+        </a>
+    </nav>
+
+
+    <div class="container">
+
+        <div class="login-box">
+
+            <!-- LEFT SIDE -->
+            <div class="left">
+
+                <h1>CR Login</h1>
+
+                <p>
+                    Login to EduBeacon and help manage important
+                    academic information for your class.
+                </p>
+
+                <div class="benefit">
+                    ✓ Add assignments & study notes
+                </div>
+
+                <div class="benefit">
+                    ✓ Post announcements for your class
+                </div>
+
+                <div class="benefit">
+                    ✓ Keep students informed
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT SIDE -->
+            <div class="right">
+
+                <h2>Welcome Back!</h2>
+
+                <p class="subtitle">
+                    Login to your CR account
+                </p>
+
+                {% if error %}
+                <div class="error-msg">
+                    ⚠️ {{ error }}
+                </div>
+                {% endif %}
+
+                <form method="POST">
+
+                    <div class="form-group">
+                        <label>USN</label>
+
+                        <input
+                            type="text"
+                            name="usn"
+                            placeholder="Enter your USN"
+                            value="{{ request.form.get('usn', '') }}"
+                            class="{{ 'error-field' if error else '' }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password</label>
+
+                        <div class="password-wrapper">
+
+                            <input
+                                type="password"
+                                id="cr_password"
+                                name="password"
+                                placeholder="Enter your password"
+                                class="{{ 'error-field' if error and 'Wrong password' in error else '' }}"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="togglePassword('cr_password', this)"
+                                aria-label="Show password"
+                            >
+                                👁️
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-btn">
+                        Login
+                    </button>
+
+                </form>
+
+
+                <div class="register-text">
+
+                    Don't have a CR account?
+
+                    <a href="{{ url_for('cr_register') }}">
+                        Register
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SHOW / HIDE PASSWORD SCRIPT -->
+
+    <script>
+
+        function togglePassword(inputId, button) {
+
+            const passwordInput = document.getElementById(inputId);
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+                button.textContent = "🙈";
+                button.setAttribute("aria-label", "Hide password");
+
+            } else {
+
+                passwordInput.type = "password";
+                button.textContent = "👁️";
+                button.setAttribute("aria-label", "Show password");
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>

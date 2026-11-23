@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Study Planner – EduBeacon</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+body{background:#f0f0f8;color:#1a1a2e}
+.sidebar{position:fixed;left:0;top:0;width:248px;height:100vh;background:#fff;border-right:1px solid #e5e0f5;padding:22px 16px;z-index:1000;display:flex;flex-direction:column}
+.logo{display:flex;align-items:center;gap:10px;padding:4px 10px 28px;font-size:22px;font-weight:800;color:#5b35d5}
+.logo-icon{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#6d4aff,#9b59f5);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px}
+.menu{list-style:none}.menu li{margin-bottom:4px}
+.menu a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;text-decoration:none;color:#5c5472;font-size:13.5px;font-weight:600;transition:.25s}
+.menu a:hover,.menu a.active{background:#eeeaff;color:#6542df}
+.menu-icon{width:20px;text-align:center}
+.logout-wrap{margin-top:auto}.logout-wrap a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;text-decoration:none;color:#d95353;font-size:13.5px;font-weight:600}
+.main{margin-left:248px;min-height:100vh;padding:28px 36px}
+.header{background:linear-gradient(135deg,#5b35d5,#8a69e8);color:#fff;padding:28px 32px;border-radius:18px;margin-bottom:28px}
+.header h1{font-size:26px;font-weight:800}.header p{opacity:.9;margin-top:6px}
+.planner-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.subject-card{background:#fff;border:1px solid #e8e4f5;border-radius:16px;overflow:hidden}
+.subject-header{padding:16px 20px;font-weight:800;font-size:15px;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.subject-body{padding:16px 20px}
+.hours-bar{background:#f0ecff;border-radius:8px;height:10px;margin:10px 0}
+.hours-fill{background:linear-gradient(90deg,#6542df,#9b59f5);height:100%;border-radius:8px;transition:.5s}
+.item-mini{font-size:12px;padding:6px 0;border-bottom:1px solid #f0ecff;display:flex;justify-content:space-between}
+.item-mini:last-child{border-bottom:none}
+.chip{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+.chip-asgn{background:#e0f0ff;color:#1565c0}
+.chip-exam{background:#ffe0e0;color:#c0392b}
+.hours-label{font-size:12px;color:#888;margin-top:8px}
+.hours-num{font-size:22px;font-weight:800;color:#5b35d5}
+.empty{text-align:center;padding:60px;color:#aaa;font-size:14px;background:#fff;border-radius:18px}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="logo"><div class="logo-icon">🔔</div>EduBeacon</div>
+  <ul class="menu">
+    <li><a href="{{ url_for('dashboard') if session.get('role')=='student' else url_for('cr_dashboard') }}"><span class="menu-icon">🏠</span>Dashboard</a></li>
+    <li><a href="/study-planner" class="active"><span class="menu-icon">📚</span>Study Planner</a></li>
+    <li><a href="/daily-schedule"><span class="menu-icon">📅</span>Daily Schedule</a></li>
+    <li><a href="/weekly-summary"><span class="menu-icon">📋</span>Weekly Summary</a></li>
+    <li><a href="/chatbot"><span class="menu-icon">🤖</span>AI Chatbot</a></li>
+    <li><a href="/student/attendance"><span class="menu-icon">📊</span>Attendance</a></li>
+  </ul>
+  <div class="logout-wrap"><a href="{{ url_for('logout') }}"><span class="menu-icon">🚪</span>Logout</a></div>
+</aside>
+<main class="main">
+  <div class="header">
+    <h1>📚 Smart Study Planner</h1>
+    <p>{{ today_str }} — AI-powered study plan based on your deadlines</p>
+  </div>
+  {% if plans %}
+  <div class="planner-grid">
+    {% for subject, data in plans.items() %}
+    {% set hours = data.suggested_hours %}
+    {% set color = '#c0392b' if hours >= 4 else '#b7420a' if hours >= 2 else '#1a7a3c' %}
+    <div class="subject-card">
+      <div class="subject-header" style="background:{{ color }}">
+        <span>{{ subject }}</span>
+        <span style="font-size:12px;opacity:.85">{{ hours }}h/day suggested</span>
+      </div>
+      <div class="subject-body">
+        <div class="hours-num">{{ hours }}h</div>
+        <div class="hours-label">suggested study hours per day</div>
+        <div class="hours-bar"><div class="hours-fill" style="width:{{ [hours*16,100]|min }}%"></div></div>
+        {% for a in data.assignments %}
+        <div class="item-mini">
+          <span>📅 {{ a.title }}</span>
+          <div><span class="chip chip-asgn">Assignment</span> <span style="font-size:10px;color:#888">{{ a.due_date }}</span></div>
+        </div>
+        {% endfor %}
+        {% for e in data.exams %}
+        <div class="item-mini">
+          <span>📝 {{ e.subject }} Exam</span>
+          <div><span class="chip chip-exam">Exam</span> <span style="font-size:10px;color:#888">{{ e.exam_date }}</span></div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">🎉 No upcoming deadlines in the next 30 days. Enjoy your free time!</div>
+  {% endif %}
+</main>
+</body></html>
+

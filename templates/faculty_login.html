@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Faculty Login - EduBeacon</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f3efff, #ffffff, #eee9ff);
+            color: #292633;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            height: 75px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #5b35d5;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6d4aff, #8b5cf6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .home-link {
+            text-decoration: none;
+            color: #555;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .home-link:hover {
+            color: #6542df;
+        }
+
+        /* LOGIN SECTION */
+
+        .login-section {
+            min-height: calc(100vh - 75px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 950px;
+            min-height: 540px;
+            background: white;
+            border-radius: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(64, 43, 130, 0.15);
+        }
+
+        /* LEFT */
+
+        .login-left {
+            background: linear-gradient(145deg, #6542df, #8062e8);
+            color: white;
+            padding: 55px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-left::before {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            top: -80px;
+            right: -80px;
+        }
+
+        .login-left::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.07);
+            bottom: -70px;
+            left: -60px;
+        }
+
+        .login-icon {
+            width: 75px;
+            height: 75px;
+            border-radius: 22px;
+            background: rgba(255,255,255,0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            margin-bottom: 25px;
+        }
+
+        .login-left h1 {
+            font-size: 36px;
+            margin-bottom: 18px;
+            line-height: 1.2;
+        }
+
+        .login-left p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #eeeaff;
+        }
+
+        .benefits {
+            margin-top: 30px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 13px;
+            font-size: 14px;
+        }
+
+        .check {
+            width: 24px;
+            height: 24px;
+            background: rgba(255,255,255,0.16);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* RIGHT */
+
+        .login-right {
+            padding: 55px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-right h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        /* FORM */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 17px;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 50px;
+            padding: 0 15px 0 45px;
+            border: 1px solid #ddd9e8;
+            border-radius: 11px;
+            outline: none;
+            background: #faf9fd;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #6542df;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(101,66,223,0.08);
+        }
+
+        /* SHOW / HIDE PASSWORD */
+
+        .password-input {
+            padding-right: 48px !important;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 19px;
+            padding: 3px;
+        }
+
+        .password-toggle:hover {
+            opacity: 0.7;
+        }
+
+        /* BUTTON */
+
+        .login-button {
+            width: 100%;
+            height: 51px;
+            border: none;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #6542df, #7654e5);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(101,66,223,0.25);
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(101,66,223,0.3);
+        }
+
+        /* MESSAGE */
+
+        .message {
+            padding: 11px 14px;
+            border-radius: 9px;
+            background: #fff0f0;
+            color: #d33;
+            border: 1px solid #ffd4d4;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        /* REGISTER */
+
+        .register-text {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .register-text a {
+            color: #6542df;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .register-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 800px) {
+
+            .login-container {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+
+            .login-left {
+                padding: 40px 35px;
+                min-height: 300px;
+            }
+
+            .benefits {
+                display: none;
+            }
+
+            .login-right {
+                padding: 40px 35px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            nav {
+                padding: 0 5%;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .login-section {
+                padding: 25px 15px;
+            }
+
+            .login-left,
+            .login-right {
+                padding: 35px 25px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🔔
+            </div>
+
+            EduBeacon
+
+        </div>
+
+        <a href="{{ url_for('home') }}" class="home-link">
+            ← Back to Home
+        </a>
+
+    </nav>
+
+
+    <!-- LOGIN -->
+
+    <section class="login-section">
+
+        <div class="login-container">
+
+
+            <!-- LEFT -->
+
+            <div class="login-left">
+
+                <div class="login-icon">
+                    👨‍🏫
+                </div>
+
+                <h1>
+                    Welcome Back!
+                </h1>
+
+                <p>
+                    Login to your faculty account and manage
+                    important academic information for your students.
+                </p>
+
+
+                <div class="benefits">
+
+                    <div class="benefit">
+                        <div class="check">✓</div>
+                        Add assignments
+                    </div>
+
+                    <div class="benefit">
+                        <div class="check">✓</div>
+                        Add examinations
+                    </div>
+
+                    <div class="benefit">
+                        <div class="check">✓</div>
+                        Post announcements
+                    </div>
+
+                    <div class="benefit">
+                        <div class="check">✓</div>
+                        Upload study notes
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT -->
+
+            <div class="login-right">
+
+                <h2>
+                    Faculty Login
+                </h2>
+
+                <p class="subtitle">
+                    Enter your faculty details to continue.
+                </p>
+
+
+                {% if message %}
+
+                    <div class="message">
+                        {{ message }}
+                    </div>
+
+                {% endif %}
+
+
+                <form method="POST">
+
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                ✉️
+                            </span>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                🔒
+                            </span>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="password-input"
+                                placeholder="Enter your password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                onclick="togglePassword('password', this)"
+                                aria-label="Show password"
+                            >
+                                👁️
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="login-button"
+                    >
+                        Login to Faculty Portal →
+                    </button>
+
+                </form>
+
+
+                <div class="register-text">
+
+                    Don't have a faculty account?
+
+                    <a href="{{ url_for('faculty_register') }}">
+                        Create Account
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SHOW / HIDE PASSWORD SCRIPT -->
+
+    <script>
+
+        function togglePassword(inputId, button) {
+
+            const passwordInput = document.getElementById(inputId);
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+                button.textContent = "🙈";
+                button.setAttribute("aria-label", "Hide password");
+
+            } else {
+
+                passwordInput.type = "password";
+                button.textContent = "👁️";
+                button.setAttribute("aria-label", "Show password");
+
+            }
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

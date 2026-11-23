@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Announcement Analytics - EduBeacon</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
+    body{background:#f0f0f8;color:#1a1a2e;}
+    .sidebar{position:fixed;left:0;top:0;width:248px;height:100vh;background:linear-gradient(180deg,#5b3cc4,#7b5be7);color:#fff;padding:22px 16px;}
+    .logo{text-align:center;font-size:24px;font-weight:800;margin-bottom:36px;}
+    .logo span{color:#dcd2ff;}
+    .menu{list-style:none;}
+    .menu li{margin:6px 0;}
+    .menu a{display:block;padding:13px 16px;text-decoration:none;color:#dcd2ff;border-radius:10px;font-size:14px;transition:.25s;}
+    .menu a:hover{background:rgba(255,255,255,.18);color:#fff;}
+    .main{margin-left:248px;padding:36px 48px;}
+    .back-link{display:inline-flex;align-items:center;gap:6px;color:#6542df;font-size:13px;text-decoration:none;margin-bottom:22px;font-weight:600;}
+    .back-link:hover{text-decoration:underline;}
+    .ann-card{background:#fff;border-radius:18px;padding:26px 30px;box-shadow:0 6px 22px rgba(0,0,0,.07);margin-bottom:24px;border-left:5px solid #6542df;}
+    .ann-card.Critical{border-left-color:#e53935;}
+    .ann-card.High{border-left-color:#fb8c00;}
+    .ann-card.Medium{border-left-color:#f9a825;}
+    .ann-card.Low{border-left-color:#43a047;}
+    .ann-card h2{font-size:20px;font-weight:800;margin-bottom:8px;}
+    .ann-card p{color:#666;font-size:13px;line-height:1.55;margin-bottom:10px;}
+    .badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;margin-right:8px;}
+    .badge.Critical{background:#ffe0e0;color:#c0392b;}
+    .badge.High{background:#fff3dc;color:#b7420a;}
+    .badge.Medium{background:#fffde0;color:#9a7a00;}
+    .badge.Low{background:#e0ffe8;color:#1a7a3c;}
+    .meta{font-size:12px;color:#888;margin-top:6px;}
+    /* STATS ROW */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+    .stat{background:#fff;border-radius:14px;padding:20px;box-shadow:0 4px 16px rgba(0,0,0,.06);text-align:center;}
+    .stat .num{font-size:30px;font-weight:800;color:#5b3cc4;margin-bottom:4px;}
+    .stat .lbl{font-size:12px;color:#888;}
+    /* PROGRESS */
+    .progress-section{background:#fff;border-radius:18px;padding:26px 30px;box-shadow:0 6px 22px rgba(0,0,0,.07);margin-bottom:24px;}
+    .progress-section h3{font-size:16px;font-weight:800;margin-bottom:16px;}
+    .prog-bar-wrap{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+    .prog-bar{flex:1;height:14px;background:#f0ecff;border-radius:20px;overflow:hidden;}
+    .prog-fill{height:100%;background:linear-gradient(90deg,#6542df,#9b59f5);border-radius:20px;}
+    .prog-label{font-size:13px;color:#555;font-weight:600;min-width:60px;text-align:right;}
+    /* NOT SEEN TABLE */
+    .not-seen-section{background:#fff;border-radius:18px;padding:26px 30px;box-shadow:0 6px 22px rgba(0,0,0,.07);}
+    .not-seen-section h3{font-size:16px;font-weight:800;margin-bottom:16px;color:#c0392b;}
+    table{width:100%;border-collapse:collapse;}
+    thead th{text-align:left;padding:10px 14px;font-size:12px;color:#888;font-weight:700;border-bottom:1.5px solid #f0ecff;}
+    tbody td{padding:12px 14px;font-size:13px;border-bottom:1px solid #f5f3ff;}
+    tbody tr:last-child td{border-bottom:none;}
+    .empty-msg{color:#aaa;font-size:13px;padding:16px 0;}
+    .why-box{background:#f5f0ff;border-radius:10px;padding:14px 16px;margin-top:10px;font-size:13px;color:#5530b0;line-height:1.55;}
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo">Edu<span>Beacon</span></div>
+    <ul class="menu">
+      <li><a href="{{ url_for('faculty_dashboard') }}">🏠 Dashboard</a></li>
+      <li><a href="{{ url_for('faculty_add_assignment') }}">📝 Add Assignment</a></li>
+      <li><a href="{{ url_for('faculty_add_examination') }}">📚 Add Examination</a></li>
+      <li><a href="{{ url_for('faculty_add_announcement') }}">📢 Add Announcement</a></li>
+      <li><a href="{{ url_for('faculty_add_note') }}">📖 Add Study Notes</a></li>
+      <li><a href="{{ url_for('logout') }}">🚪 Logout</a></li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <a href="{{ url_for('faculty_dashboard') }}" class="back-link">← Back to Dashboard</a>
+
+    <!-- ANNOUNCEMENT DETAILS -->
+    <div class="ann-card {{ announcement.priority_label or 'Low' }}">
+      <h2>{{ announcement.title }}</h2>
+      <p>{{ announcement.message }}</p>
+      <span class="badge {{ announcement.priority_label or 'Low' }}">{{ announcement.priority_label or 'Low' }} Priority</span>
+      <span class="badge" style="background:#f0ecff;color:#6542df;">{{ announcement.priority_score or 0 }}/100</span>
+      <div class="meta">
+        Type: {{ announcement.type or 'General' }} &nbsp;·&nbsp;
+        Dept: {{ announcement.target_department }} &nbsp;·&nbsp;
+        Sem: {{ announcement.target_semester }}
+        {% if announcement.deadline %}&nbsp;·&nbsp; Deadline: {{ announcement.deadline }}{% endif %}
+      </div>
+      {% if announcement.priority_reason %}
+      <div class="why-box">🔍 <strong>Why this priority?</strong><br>{{ announcement.priority_reason }}</div>
+      {% endif %}
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat"><div class="num">{{ targeted }}</div><div class="lbl">👥 Students Targeted</div></div>
+      <div class="stat"><div class="num">{{ ack_count }}</div><div class="lbl">✅ Acknowledged</div></div>
+      <div class="stat"><div class="num">{{ targeted - ack_count }}</div><div class="lbl">⚠️ Not Seen</div></div>
+      <div class="stat">
+        <div class="num">{{ ((ack_count / targeted * 100) if targeted > 0 else 0)|int }}%</div>
+        <div class="lbl">📊 Reach Rate</div>
+      </div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-section">
+      <h3>📊 Acknowledgement Progress</h3>
+      <div class="prog-bar-wrap">
+        <div class="prog-bar">
+          {% set pct = ((ack_count / targeted * 100) if targeted > 0 else 0)|int %}
+          <div class="prog-fill" style="width:{{ pct }}%"></div>
+        </div>
+        <span class="prog-label">{{ ack_count }} / {{ targeted }}</span>
+      </div>
+      <p style="font-size:13px;color:#777;">{{ pct }}% of targeted students have acknowledged this announcement.</p>
+    </div>
+
+    <!-- STUDENTS WHO HAVEN'T SEEN -->
+    {% if not_seen %}
+    <div class="not-seen-section">
+      <h3>⚠️ {{ not_seen|length }} Student{{ 's' if not_seen|length != 1 }} Haven't Seen This</h3>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Student Name</th><th>USN</th></tr>
+        </thead>
+        <tbody>
+          {% for s in not_seen %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ s.name }}</td>
+            <td>{{ s.usn }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <div class="not-seen-section">
+        <h3 style="color:#27ae60;">✅ All Targeted Students Have Seen This!</h3>
+        <div class="empty-msg">Every student in the target group has acknowledged this announcement.</div>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

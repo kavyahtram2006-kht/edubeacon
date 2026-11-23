@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Study Material | EduBeacon</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0eaff, #f5f3ff);
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #4935a5;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 22px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #6652c8;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #6652c8;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #4935a5;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #6652c8;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>📖 Add Study Material</h1>
+        <p class="subtitle">Share study notes and learning materials with students.</p>
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <label for="title">Material Title</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                placeholder="Enter material title"
+                required
+            >
+
+            <label for="subject">Subject</label>
+            <input
+                type="text"
+                id="subject"
+                name="subject"
+                placeholder="Enter subject name"
+                required
+            >
+
+            <label for="content">Description / Notes</label>
+            <textarea
+                id="content"
+                name="content"
+                placeholder="Enter a description or study notes"
+            ></textarea>
+
+            <label for="note_file">Upload File (Optional)</label>
+            <input
+                type="file"
+                id="note_file"
+                name="note_file"
+                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+            >
+
+            <button type="submit">Add Study Material</button>
+
+        </form>
+
+        <a href="{{ url_for('cr_dashboard') }}" class="back-link">
+            ← Back to CR Dashboard
+        </a>
+
+    </div>
+
+</body>
+</html>

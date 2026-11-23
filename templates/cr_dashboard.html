@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CR Dashboard - EduBeacon</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f0f8;
+            color: #1a1a2e;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 248px;
+            height: 100vh;
+            background: white;
+            border-right: 1px solid #e5e0f5;
+            padding: 22px 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 10px 28px;
+            font-size: 22px;
+            font-weight: 800;
+            color: #5b35d5;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: linear-gradient(135deg,#6d4aff,#9b59f5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .menu-title {
+            color: #b0a8c8;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            padding: 0 12px;
+            margin-bottom: 8px;
+        }
+
+        .logout-wrap {
+            margin-top: auto;
+        }
+
+        .logout-wrap a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #d95353;
+            font-size: 13.5px;
+            font-weight: 600;
+        }
+
+        .logout-wrap a:hover {
+            background: #fff0f0;
+        }
+
+        .main {
+            margin-left: 248px;
+            min-height: 100vh;
+            padding: 35px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 45px;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .page-title p {
+            color: #8880a0;
+            font-size: 14px;
+        }
+
+        .cr-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 9px 16px;
+            border-radius: 12px;
+            border: 1px solid #e5e0f5;
+        }
+
+        .profile-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #eeeaff;
+            color: #6542df;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .profile-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .cr-badge {
+            background: linear-gradient(135deg,#e67e22,#f39c12);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* TWO DASHBOARD BUTTONS */
+
+        .welcome-box {
+            background: linear-gradient(135deg,#6542df,#9b59f5);
+            color: white;
+            padding: 35px;
+            border-radius: 18px;
+            margin-bottom: 35px;
+        }
+
+        .welcome-box h2 {
+            font-size: 23px;
+            margin-bottom: 10px;
+        }
+
+        .welcome-box p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .dashboard-button {
+            background: white;
+            border: 1px solid #e8e4f5;
+            border-radius: 18px;
+            padding: 45px 25px;
+            text-align: center;
+            text-decoration: none;
+            color: #1a1a2e;
+            transition: 0.3s;
+            box-shadow: 0 5px 20px rgba(80,50,150,0.05);
+        }
+
+        .dashboard-button:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(80,50,150,0.12);
+            border-color: #8062e8;
+        }
+
+        .button-icon {
+            width: 75px;
+            height: 75px;
+            border-radius: 20px;
+            background: #eeeaff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            margin: 0 auto 20px;
+        }
+
+        .dashboard-button h2 {
+            font-size: 21px;
+            margin-bottom: 10px;
+            color: #6542df;
+        }
+
+        .dashboard-button p {
+            color: #888;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        @media(max-width:750px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px 16px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .button-container {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-box {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">🔔</div>
+            EduBeacon
+        </div>
+
+        <div class="menu-title">CR Panel</div>
+
+        <div class="logout-wrap">
+            <a href="{{ url_for('logout') }}">
+                🚪 Logout
+            </a>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN DASHBOARD -->
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div class="page-title">
+                <h1>CR Dashboard</h1>
+                <p>Manage academic assignments and study materials.</p>
+            </div>
+
+            <div class="cr-profile">
+
+                <div class="profile-icon">👤</div>
+
+                <div class="profile-info">
+                    <strong>{{ session.get('username','CR') }}</strong>
+                    <span class="cr-badge">CR</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- WELCOME MESSAGE -->
+
+        <div class="welcome-box">
+
+            <h2>Welcome, {{ session.get('username','CR') }}! 👋</h2>
+
+            <p>
+                Manage your class assignments and share useful
+                study materials with your classmates.
+            </p>
+
+        </div>
+
+
+        <!-- ONLY TWO BUTTONS -->
+
+        <div class="button-container">
+
+            <!-- ASSIGNMENTS BUTTON -->
+
+            <a href="{{ url_for('cr_add_assignment') }}"
+               class="dashboard-button">
+
+                <div class="button-icon">📅</div>
+
+                <h2>Assignments</h2>
+
+                <p>
+                    Add and share assignments with your classmates.
+                </p>
+
+            </a>
+
+
+            <!-- STUDY MATERIAL BUTTON -->
+
+            <a href="{{ url_for('cr_add_note') }}"
+               class="dashboard-button">
+
+                <div class="button-icon">📚</div>
+
+                <h2>Study Material</h2>
+
+                <p>
+                    Upload and share study notes and learning materials.
+                </p>
+
+            </a>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

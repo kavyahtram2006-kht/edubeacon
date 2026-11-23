@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Notifications – EduBeacon</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+body{background:#f0f0f8;color:#1a1a2e}
+.sidebar{position:fixed;left:0;top:0;width:248px;height:100vh;background:#fff;border-right:1px solid #e5e0f5;padding:22px 16px;z-index:1000;display:flex;flex-direction:column}
+.logo{display:flex;align-items:center;gap:10px;padding:4px 10px 28px;font-size:22px;font-weight:800;color:#5b35d5}
+.logo-icon{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#6d4aff,#9b59f5);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px}
+.menu{list-style:none}.menu li{margin-bottom:4px}
+.menu a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;text-decoration:none;color:#5c5472;font-size:13.5px;font-weight:600;transition:.25s}
+.menu a:hover,.menu a.active{background:#eeeaff;color:#6542df}
+.menu-icon{width:20px;text-align:center;font-size:16px}
+.logout-wrap{margin-top:auto}.logout-wrap a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;text-decoration:none;color:#d95353;font-size:13.5px;font-weight:600}
+.main{margin-left:248px;min-height:100vh;padding:28px 36px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}
+.page-title h1{font-size:26px;font-weight:800}.page-title p{color:#8880a0;font-size:13px}
+.btn{padding:9px 18px;border-radius:10px;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:.2s}
+.btn-primary{background:#6542df;color:#fff}.btn-primary:hover{background:#5133c2}
+.notif-list{display:flex;flex-direction:column;gap:10px}
+.notif-card{background:#fff;border:1px solid #e8e4f5;border-radius:14px;padding:16px 20px;display:flex;align-items:flex-start;gap:14px}
+.notif-card.unread{border-left:4px solid #6542df;background:#faf8ff}
+.notif-icon{width:40px;height:40px;border-radius:50%;background:#eeeaff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.notif-body h3{font-size:14px;font-weight:700;margin-bottom:4px}
+.notif-body p{font-size:12px;color:#666;line-height:1.5;margin-bottom:6px}
+.notif-meta{font-size:11px;color:#aaa;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.type-badge{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:#eeeaff;color:#6542df}
+.unread-dot{width:8px;height:8px;border-radius:50%;background:#6542df;display:inline-block}
+.empty{text-align:center;padding:60px;color:#aaa;font-size:14px}
+.pagination{display:flex;gap:8px;margin-top:24px;justify-content:center}
+.pagination a{padding:8px 14px;border-radius:8px;background:#fff;border:1px solid #d9d4f0;text-decoration:none;color:#5c5472;font-size:13px;font-weight:600}
+.pagination a.active{background:#6542df;color:#fff;border-color:#6542df}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="logo"><div class="logo-icon">🔔</div>EduBeacon</div>
+  <ul class="menu">
+    <li><a href="{{ url_for('dashboard') if session.get('role')=='student' else url_for('cr_dashboard') if session.get('role')=='cr' else url_for('faculty_dashboard') }}"><span class="menu-icon">🏠</span>Dashboard</a></li>
+    <li><a href="/notifications" class="active"><span class="menu-icon">🔔</span>Notifications</a></li>
+    <li><a href="/daily-schedule"><span class="menu-icon">📅</span>Daily Schedule</a></li>
+    <li><a href="/chatbot"><span class="menu-icon">🤖</span>AI Chatbot</a></li>
+    <li><a href="/student/attendance"><span class="menu-icon">📊</span>Attendance</a></li>
+    <li><a href="/feedback"><span class="menu-icon">💬</span>Feedback</a></li>
+    <li><a href="/profile"><span class="menu-icon">👤</span>Profile</a></li>
+  </ul>
+  <div class="logout-wrap"><a href="{{ url_for('logout') }}"><span class="menu-icon">🚪</span>Logout</a></div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div class="page-title"><h1>🔔 Notifications</h1><p>{{ unread_count }} unread notification{{ 's' if unread_count != 1 }}</p></div>
+    <button class="btn btn-primary" onclick="markAllRead()">✓ Mark All Read</button>
+  </div>
+  <div class="notif-list">
+    {% if notifications %}
+      {% for n in notifications %}
+      <div class="notif-card {{ 'unread' if not n.is_read else '' }}" id="notif-{{ n.id }}">
+        <div class="notif-icon">{{ '📅' if n.notif_type=='assignment' else '📝' if n.notif_type=='exam' else '📢' if n.notif_type=='announcement' else '🔔' }}</div>
+        <div class="notif-body" style="flex:1">
+          <h3>{{ n.title }}</h3>
+          <p>{{ n.message }}</p>
+          <div class="notif-meta">
+            <span class="type-badge">{{ n.notif_type }}</span>
+            {% if not n.is_read %}<span class="unread-dot"></span>{% endif %}
+            <span>{{ n.created_at }}</span>
+            {% if n.link %}<a href="{{ n.link }}" style="color:#6542df;font-weight:700">View →</a>{% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty">🎉 You're all caught up! No notifications.</div>
+    {% endif %}
+  </div>
+  {% if total_pages > 1 %}
+  <div class="pagination">
+    {% for p in range(1, total_pages+1) %}
+    <a href="?page={{ p }}" class="{{ 'active' if p == page }}">{{ p }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+</main>
+<script>
+function markAllRead(){
+  fetch('/api/notifications/mark-all-read',{method:'POST'})
+    .then(r=>r.json()).then(()=>{
+      document.querySelectorAll('.notif-card.unread').forEach(c=>c.classList.remove('unread'));
+      document.querySelectorAll('.unread-dot').forEach(d=>d.remove());
+    });
+}
+</script>
+</body></html>
+

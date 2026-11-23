@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Weekly Summary – EduBeacon</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+body{background:#f0f0f8;color:#1a1a2e}
+.sidebar{position:fixed;left:0;top:0;width:248px;height:100vh;background:#fff;border-right:1px solid #e5e0f5;padding:22px 16px;z-index:1000;display:flex;flex-direction:column}
+.logo{display:flex;align-items:center;gap:10px;padding:4px 10px 28px;font-size:22px;font-weight:800;color:#5b35d5}
+.logo-icon{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#6d4aff,#9b59f5);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px}
+.menu{list-style:none}.menu li{margin-bottom:4px}
+.menu a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;text-decoration:none;color:#5c5472;font-size:13.5px;font-weight:600;transition:.25s}
+.menu a:hover,.menu a.active{background:#eeeaff;color:#6542df}
+.menu-icon{width:20px;text-align:center}
+.logout-wrap{margin-top:auto}.logout-wrap a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;text-decoration:none;color:#d95353;font-size:13.5px;font-weight:600}
+.main{margin-left:248px;min-height:100vh;padding:28px 36px}
+.header{background:linear-gradient(135deg,#5b35d5,#8a69e8);color:#fff;padding:28px 32px;border-radius:18px;margin-bottom:28px}
+.header h1{font-size:26px;font-weight:800}.header p{opacity:.9;margin-top:6px}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:#fff;border-radius:14px;padding:22px;border:1px solid #e8e4f5;text-align:center}
+.stat-num{font-size:36px;font-weight:800;color:#5b35d5}
+.stat-label{font-size:12px;color:#888;margin-top:4px}
+.section{margin-bottom:28px}
+.section-title{font-size:18px;font-weight:800;margin-bottom:14px}
+.item-row{background:#fff;border:1px solid #e8e4f5;border-radius:12px;padding:14px 18px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.red{background:#ffe0e0;color:#c0392b}.orange{background:#fff3dc;color:#b7420a}.green{background:#e0ffe8;color:#1a7a3c}
+.chart-box{background:#fff;border-radius:14px;padding:22px;border:1px solid #e8e4f5;max-width:400px}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="logo"><div class="logo-icon">🔔</div>EduBeacon</div>
+  <ul class="menu">
+    <li><a href="{{ url_for('dashboard') if role=='student' else url_for('cr_dashboard') }}"><span class="menu-icon">🏠</span>Dashboard</a></li>
+    <li><a href="/daily-schedule"><span class="menu-icon">📅</span>Daily Schedule</a></li>
+    <li><a href="/weekly-summary" class="active"><span class="menu-icon">📋</span>Weekly Summary</a></li>
+    <li><a href="/notifications"><span class="menu-icon">🔔</span>Notifications</a></li>
+    <li><a href="/chatbot"><span class="menu-icon">🤖</span>AI Chatbot</a></li>
+    <li><a href="/study-planner"><span class="menu-icon">📚</span>Study Planner</a></li>
+    <li><a href="/student/attendance"><span class="menu-icon">📊</span>Attendance</a></li>
+  </ul>
+  <div class="logout-wrap"><a href="{{ url_for('logout') }}"><span class="menu-icon">🚪</span>Logout</a></div>
+</aside>
+<main class="main">
+  <div class="header">
+    <h1>📋 Weekly Summary</h1>
+    <p>{{ week_start_str }} — {{ week_end_str }}</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num">{{ week_assignments|length }}</div><div class="stat-label">📅 Assignments This Week</div></div>
+    <div class="stat-card"><div class="stat-num">{{ week_exams|length }}</div><div class="stat-label">📝 Exams This Week</div></div>
+    <div class="stat-card"><div class="stat-num">{{ week_notes|length }}</div><div class="stat-label">📚 Notes Available</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">📅 Assignments This Week</div>
+    {% for a in week_assignments %}
+    <div class="item-row">
+      <div><strong>{{ a.title }}</strong><br><span style="font-size:12px;color:#888">{{ a.subject }}</span></div>
+      <span class="badge {{ 'red' if a.days_left<=1 else 'orange' if a.days_left<=3 else 'green' }}">{{ a.due_date }}</span>
+    </div>
+    {% else %}
+    <div style="color:#aaa;padding:16px;text-align:center">No assignments this week 🎉</div>
+    {% endfor %}
+  </div>
+
+  <div class="section">
+    <div class="section-title">📝 Exams This Week</div>
+    {% for e in week_exams %}
+    <div class="item-row">
+      <div><strong>{{ e.subject }}</strong><br><span style="font-size:12px;color:#888">{{ e.exam_time or 'Time TBA' }}</span></div>
+      <span class="badge red">{{ e.exam_date }}</span>
+    </div>
+    {% else %}
+    <div style="color:#aaa;padding:16px;text-align:center">No exams this week ✅</div>
+    {% endfor %}
+  </div>
+</main>
+</body></html>
+

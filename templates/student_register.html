@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Registration - EduBeacon</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f3efff, #ffffff, #eee9ff);
+            color: #292633;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            height: 75px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #5b35d5;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6d4aff, #8b5cf6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .home-link {
+            text-decoration: none;
+            color: #555;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .home-link:hover {
+            color: #6542df;
+        }
+
+        /* ================= REGISTER SECTION ================= */
+
+        .register-section {
+            min-height: calc(100vh - 75px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 45px 20px;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 1050px;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            box-shadow: 0 20px 60px rgba(64, 43, 130, 0.15);
+        }
+
+        /* ================= LEFT SIDE ================= */
+
+        .register-left {
+            background: linear-gradient(145deg, #6542df, #8062e8);
+            color: white;
+            padding: 55px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-left::before {
+            content: "";
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            right: -90px;
+            top: -80px;
+        }
+
+        .register-left::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+            left: -70px;
+            bottom: -70px;
+        }
+
+        .register-icon {
+            width: 75px;
+            height: 75px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            margin-bottom: 25px;
+        }
+
+        .register-left h1 {
+            font-size: 35px;
+            line-height: 1.2;
+            margin-bottom: 17px;
+        }
+
+        .register-left p {
+            color: #eeeaff;
+            font-size: 15px;
+            line-height: 1.8;
+            max-width: 370px;
+        }
+
+        .benefits {
+            margin-top: 30px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 13px;
+            font-size: 14px;
+        }
+
+        .check {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* ================= RIGHT SIDE ================= */
+
+        .register-right {
+            padding: 45px 50px;
+        }
+
+        .register-right h2 {
+            font-size: 29px;
+            margin-bottom: 7px;
+        }
+
+        .subtitle {
+            color: #88838f;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        /* ================= MESSAGE ================= */
+
+        .message {
+            padding: 11px 14px;
+            border-radius: 9px;
+            background: #fff0f0;
+            color: #d33;
+            border: 1px solid #ffd4d4;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        /* ================= FORM ================= */
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #393541;
+            margin-bottom: 7px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #8b849c;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            height: 47px;
+            padding: 0 13px 0 42px;
+            border: 1px solid #ddd9e8;
+            border-radius: 10px;
+            outline: none;
+            background: #faf9fd;
+            font-size: 13px;
+            color: #333;
+            transition: 0.3s;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #6542df;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(101, 66, 223, 0.08);
+        }
+
+        .form-group input::placeholder {
+            color: #aaa5b2;
+        }
+
+        /* ================= SHOW / HIDE PASSWORD ================= */
+
+        .password-input {
+            padding-right: 45px !important;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            color: #6542df;
+            padding: 3px;
+        }
+
+        .password-toggle:hover {
+            opacity: 0.7;
+        }
+
+        /* ================= REGISTER BUTTON ================= */
+
+        .register-button {
+            width: 100%;
+            height: 50px;
+            border: none;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #6542df, #7654e5);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(101, 66, 223, 0.25);
+        }
+
+        .register-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(101, 66, 223, 0.3);
+        }
+
+        /* ================= LOGIN LINK ================= */
+
+        .login-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .login-text a {
+            color: #6542df;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .login-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 850px) {
+
+            .register-container {
+                grid-template-columns: 1fr;
+                max-width: 550px;
+            }
+
+            .register-left {
+                padding: 40px 35px;
+            }
+
+            .register-left h1 {
+                font-size: 30px;
+            }
+
+            .benefits {
+                display: none;
+            }
+
+            .register-right {
+                padding: 40px 35px;
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            nav {
+                padding: 0 5%;
+            }
+
+            .logo {
+                font-size: 21px;
+            }
+
+            .register-section {
+                padding: 25px 15px;
+            }
+
+            .register-left {
+                padding: 35px 25px;
+            }
+
+            .register-right {
+                padding: 35px 25px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🔔
+            </div>
+
+            EduBeacon
+
+        </div>
+
+
+        <a href="{{ url_for('home') }}" class="home-link">
+            ← Back to Home
+        </a>
+
+    </nav>
+
+
+
+    <!-- ================= REGISTER SECTION ================= -->
+
+    <section class="register-section">
+
+        <div class="register-container">
+
+
+            <!-- ================= LEFT SIDE ================= -->
+
+            <div class="register-left">
+
+                <div class="register-icon">
+                    🎓
+                </div>
+
+                <h1>
+                    Join EduBeacon
+                </h1>
+
+                <p>
+                    Create your student account and keep all your
+                    important academic information organized in
+                    one place.
+                </p>
+
+
+                <div class="benefits">
+
+                    <div class="benefit">
+
+                        <div class="check">
+                            ✓
+                        </div>
+
+                        Track assignments and deadlines
+
+                    </div>
+
+
+                    <div class="benefit">
+
+                        <div class="check">
+                            ✓
+                        </div>
+
+                        Stay updated about examinations
+
+                    </div>
+
+
+                    <div class="benefit">
+
+                        <div class="check">
+                            ✓
+                        </div>
+
+                        Receive important announcements
+
+                    </div>
+
+
+                    <div class="benefit">
+
+                        <div class="check">
+                            ✓
+                        </div>
+
+                        Access study materials
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= RIGHT SIDE ================= -->
+
+            <div class="register-right">
+
+                <h2>
+                    Create Student Account
+                </h2>
+
+                <p class="subtitle">
+                    Fill in your details to get started.
+                </p>
+
+
+                <!-- MESSAGE -->
+
+                {% if message %}
+
+                    <div class="message">
+                        {{ message }}
+                    </div>
+
+                {% endif %}
+
+
+
+                <!-- ================= FORM ================= -->
+
+                <form method="POST">
+
+
+                    <!-- NAME + EMAIL -->
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label for="name">
+                                Full Name
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    👤
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    placeholder="Enter your full name"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="email">
+                                Email Address
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    ✉️
+                                </span>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="Enter your email"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- USN + DEPARTMENT -->
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label for="usn">
+                                USN
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    🎓
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="usn"
+                                    name="usn"
+                                    placeholder="Enter your USN"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="department">
+                                Department
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    🏫
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="department"
+                                    name="department"
+                                    placeholder="Enter department"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- SEMESTER + PASSWORD -->
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label for="semester">
+                                Semester
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    📚
+                                </span>
+
+                                <select
+                                    id="semester"
+                                    name="semester"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select semester
+                                    </option>
+
+                                    <option value="1">
+                                        1st Semester
+                                    </option>
+
+                                    <option value="2">
+                                        2nd Semester
+                                    </option>
+
+                                    <option value="3">
+                                        3rd Semester
+                                    </option>
+
+                                    <option value="4">
+                                        4th Semester
+                                    </option>
+
+                                    <option value="5">
+                                        5th Semester
+                                    </option>
+
+                                    <option value="6">
+                                        6th Semester
+                                    </option>
+
+                                    <option value="7">
+                                        7th Semester
+                                    </option>
+
+                                    <option value="8">
+                                        8th Semester
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="password">
+                                Password
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    🔒
+                                </span>
+
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    class="password-input"
+                                    placeholder="Create a password"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    onclick="togglePassword('password', this)"
+                                    aria-label="Show password"
+                                >
+                                    👁️
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- REGISTER BUTTON -->
+
+                    <button
+                        type="submit"
+                        class="register-button"
+                    >
+                        Create Student Account →
+                    </button>
+
+
+                </form>
+
+
+
+                <!-- LOGIN LINK -->
+
+                <div class="login-text">
+
+                    Already have an account?
+
+                    <a href="{{ url_for('student_login') }}">
+                        Login here
+                    </a>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SHOW / HIDE PASSWORD SCRIPT ================= -->
+
+    <script>
+
+        function togglePassword(inputId, button) {
+
+            const passwordInput = document.getElementById(inputId);
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+                button.textContent = "🙈";
+                button.setAttribute("aria-label", "Hide password");
+
+            } else {
+
+                passwordInput.type = "password";
+                button.textContent = "👁️";
+                button.setAttribute("aria-label", "Show password");
+
+            }
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

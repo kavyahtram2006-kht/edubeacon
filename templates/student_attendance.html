@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Attendance – EduBeacon</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+body{background:#f0f0f8;color:#1a1a2e}
+.sidebar{position:fixed;left:0;top:0;width:248px;height:100vh;background:#fff;border-right:1px solid #e5e0f5;padding:22px 16px;z-index:1000;display:flex;flex-direction:column}
+.logo{display:flex;align-items:center;gap:10px;padding:4px 10px 28px;font-size:22px;font-weight:800;color:#5b35d5}
+.logo-icon{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#6d4aff,#9b59f5);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px}
+.menu{list-style:none}.menu li{margin-bottom:4px}
+.menu a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;text-decoration:none;color:#5c5472;font-size:13.5px;font-weight:600;transition:.25s}
+.menu a:hover,.menu a.active{background:#eeeaff;color:#6542df}
+.menu-icon{width:20px;text-align:center}
+.logout-wrap{margin-top:auto}.logout-wrap a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;text-decoration:none;color:#d95353;font-size:13.5px;font-weight:600}
+.main{margin-left:248px;min-height:100vh;padding:28px 36px}
+.page-title{margin-bottom:26px}
+.page-title h1{font-size:26px;font-weight:800}.page-title p{color:#8880a0;font-size:13px}
+.warning-banner{background:#ffe9e9;border:1.5px solid #f5c6c6;border-radius:14px;padding:16px 20px;margin-bottom:20px;color:#c0392b;font-weight:600;display:flex;align-items:center;gap:10px}
+.att-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.att-card{background:#fff;border:1px solid #e8e4f5;border-radius:16px;padding:22px;text-align:center}
+.att-card.low{border-color:#f5c6c6;background:#fff8f8}
+.att-pct{font-size:40px;font-weight:800;line-height:1}
+.att-pct.safe{color:#27ae60}
+.att-pct.danger{color:#c0392b}
+.att-pct.warning{color:#e67e22}
+.att-subject{font-size:15px;font-weight:700;margin:8px 0 4px}
+.att-detail{font-size:12px;color:#888}
+.btn{display:inline-block;padding:9px 20px;border-radius:10px;background:#6542df;color:#fff;text-decoration:none;font-size:13px;font-weight:700;margin-top:20px}
+.empty{text-align:center;padding:60px;color:#aaa;font-size:14px;background:#fff;border-radius:14px}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="logo"><div class="logo-icon">🔔</div>EduBeacon</div>
+  <ul class="menu">
+    <li><a href="{{ url_for('dashboard') if session.get('role')=='student' else url_for('cr_dashboard') }}"><span class="menu-icon">🏠</span>Dashboard</a></li>
+    <li><a href="/student/attendance" class="active"><span class="menu-icon">📊</span>My Attendance</a></li>
+    <li><a href="/daily-schedule"><span class="menu-icon">📅</span>Daily Schedule</a></li>
+    <li><a href="/notifications"><span class="menu-icon">🔔</span>Notifications</a></li>
+    <li><a href="/chatbot"><span class="menu-icon">🤖</span>AI Chatbot</a></li>
+    <li><a href="/feedback"><span class="menu-icon">💬</span>Feedback</a></li>
+    <li><a href="/profile"><span class="menu-icon">👤</span>Profile</a></li>
+  </ul>
+  <div class="logout-wrap"><a href="{{ url_for('logout') }}"><span class="menu-icon">🚪</span>Logout</a></div>
+</aside>
+<main class="main">
+  <div class="page-title">
+    <h1>📊 My Attendance</h1>
+    <p>Subject-wise attendance tracking</p>
+  </div>
+
+  {% set low_subjects = subjects|selectattr('low')|list %}
+  {% if low_subjects %}
+  <div class="warning-banner">
+    ⚠️ Low attendance warning! You are below 75% in {{ low_subjects|length }} subject{{ 's' if low_subjects|length != 1 }}: 
+    {{ low_subjects|map(attribute='subject')|join(', ') }}
+  </div>
+  {% endif %}
+
+  {% if subjects %}
+  <div class="att-grid">
+    {% for s in subjects %}
+    <div class="att-card {{ 'low' if s.low }}">
+      <div class="att-pct {{ 'danger' if s.percentage < 75 else 'warning' if s.percentage < 85 else 'safe' }}">{{ s.percentage }}%</div>
+      <div class="att-subject">{{ s.subject }}</div>
+      <div class="att-detail">{{ s.present_count }} present / {{ s.total_count }} classes</div>
+      {% if s.low %}<div style="color:#c0392b;font-size:11px;margin-top:6px;font-weight:700">⚠️ Below 75% — Attendance shortage!</div>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  <div style="margin-top:20px">
+    <a href="/student/attendance/download" class="btn">⬇ Download My Attendance CSV</a>
+  </div>
+  {% else %}
+  <div class="empty">📊 No attendance records yet. Check back after classes begin.</div>
+  {% endif %}
+</main>
+</body></html>
+

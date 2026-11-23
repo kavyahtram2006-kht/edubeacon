@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EduBeacon | Smart Academic Alert System</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #1e293b;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            width: 100%;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: 800;
+            color: #2563eb;
+        }
+
+        .logo span {
+            color: #0f172a;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #475569;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .nav-button {
+            background: #2563eb;
+            color: white !important;
+            padding: 11px 20px;
+            border-radius: 8px;
+        }
+
+        /* HERO SECTION */
+
+        .hero {
+            min-height: 540px;
+            padding: 90px 8%;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: white;
+            color: #2563eb;
+            padding: 9px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: #2563eb;
+        }
+
+        .hero p {
+            font-size: 16px;
+            line-height: 1.9;
+            color: #475569;
+            max-width: 570px;
+            margin-bottom: 30px;
+        }
+
+        .hero-button {
+            display: inline-block;
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            padding: 15px 28px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(37,99,235,0.2);
+        }
+
+        .hero-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-3px);
+        }
+
+        .hero-icon {
+            width: 280px;
+            height: 280px;
+            background: white;
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 110px;
+            box-shadow: 0 15px 40px rgba(37,99,235,0.12);
+            flex-shrink: 0;
+        }
+
+        /* COMMON SECTION */
+
+        .section {
+            padding: 85px 8%;
+            text-align: center;
+        }
+
+        .section-heading {
+            font-size: 34px;
+            color: #0f172a;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .section-description {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.8;
+            max-width: 650px;
+            margin: 0 auto 40px;
+        }
+
+        /* ROLE SECTION */
+
+        .roles-section {
+            background: #ffffff;
+        }
+
+        .department-box {
+            max-width: 450px;
+            margin: 0 auto 35px;
+            text-align: left;
+        }
+
+        .department-box label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 10px;
+        }
+
+        .department-select {
+            width: 100%;
+            padding: 15px;
+            border: 1.5px solid #bfdbfe;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #334155;
+            background: #f8fbff;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .department-select:focus {
+            border-color: #2563eb;
+        }
+
+        #deptWarning {
+            display: none;
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 0 auto 25px;
+            max-width: 450px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .role-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .role-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 35px 25px;
+            box-shadow: 0 8px 25px rgba(15,23,42,0.05);
+            transition: 0.3s;
+        }
+
+        .role-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 15px 35px rgba(37,99,235,0.12);
+            border-color: #bfdbfe;
+        }
+
+        .role-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            margin: 0 auto 20px;
+        }
+
+        .role-card h3 {
+            font-size: 21px;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+
+        .role-card p {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.7;
+            min-height: 45px;
+            margin-bottom: 25px;
+        }
+
+        .role-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 11px 19px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .btn-login {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-register {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* FEATURES SECTION */
+
+        .features-section {
+            background: #eff6ff;
+        }
+
+        .features-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 15px;
+            text-align: left;
+            box-shadow: 0 5px 20px rgba(15,23,42,0.04);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 18px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.8;
+        }
+
+        /* ABOUT SECTION */
+
+        .about-section {
+            background: white;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .about-content p {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 2;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 30px 15px;
+        }
+
+        footer h3 {
+            font-size: 23px;
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            color: #cbd5e1;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* RESPONSIVE DESIGN */
+
+        @media(max-width: 900px) {
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 70px 6%;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero-icon {
+                width: 200px;
+                height: 200px;
+                font-size: 80px;
+            }
+
+            .role-container,
+            .features-container {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media(max-width: 600px) {
+
+            .navbar {
+                padding: 18px 5%;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 11px;
+            }
+
+            .nav-button {
+                padding: 9px 12px;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .section {
+                padding: 60px 5%;
+            }
+
+            .section-heading {
+                font-size: 27px;
+            }
+
+            .role-container,
+            .features-container {
+                grid-template-columns: 1fr;
+            }
+
+            .role-buttons {
+                flex-wrap: wrap;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- NAVIGATION BAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🎓 Edu<span>Beacon</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#about">About</a>
+            <a href="#roles" class="nav-button">Get Started</a>
+        </div>
+
+    </nav>
+
+
+    <!-- HERO SECTION -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+                🎓 Smart Academic Notification System
+            </div>
+
+            <h1>
+                Stay Informed.<br>
+                Stay <span>Organized.</span><br>
+                Stay Ahead.
+            </h1>
+
+            <p>
+                Welcome to EduBeacon, an intelligent academic alert
+                system designed to keep students, class representatives,
+                and faculty updated with important academic information.
+                Never miss an important assignment, examination,
+                announcement, or deadline.
+            </p>
+
+            <a href="#roles" class="hero-button">
+                Choose Your Role ↓
+            </a>
+
+        </div>
+
+        <div class="hero-icon">
+            📚
+        </div>
+
+    </section>
+
+
+    <!-- ROLE SELECTION SECTION -->
+
+    <section class="section roles-section" id="roles">
+
+        <h2 class="section-heading">
+            Choose Your Role
+        </h2>
+
+        <p class="section-description">
+            Select your department and access EduBeacon using
+            your registered account.
+        </p>
+
+
+        <!-- DEPARTMENT SELECTION -->
+
+        <div class="department-box">
+
+            <label for="departmentSelect">
+                Select Your Department
+            </label>
+
+            <select class="department-select" id="departmentSelect">
+
+                <option value="">-- Choose Department --</option>
+
+                <option value="ISE">
+                    Information Science & Engineering (ISE)
+                </option>
+
+                <option value="CSE">
+                    Computer Science & Engineering (CSE)
+                </option>
+
+                <option value="ECE">
+                    Electronics & Communication Engineering (ECE)
+                </option>
+
+                <option value="EEE">
+                    Electrical & Electronics Engineering (EEE)
+                </option>
+
+                <option value="ME">
+                    Mechanical Engineering (ME)
+                </option>
+
+                <option value="CV">
+                    Civil Engineering (CV)
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div id="deptWarning">
+            ⚠️ Please select your department first.
+        </div>
+
+
+        <!-- ROLE CARDS -->
+
+        <div class="role-container">
+
+            <!-- STUDENT -->
+
+            <div class="role-card">
+
+                <div class="role-icon">🎓</div>
+
+                <h3>Student</h3>
+
+                <p>
+                    View assignments, examinations,
+                    academic announcements, and study notes.
+                </p>
+
+                <div class="role-buttons">
+
+                    <a href="#"
+                       onclick="return go('/student-login')"
+                       class="btn btn-login">
+                        Login
+                    </a>
+
+                    <a href="#"
+                       onclick="return go('/student-register')"
+                       class="btn btn-register">
+                        Register
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- CLASS REPRESENTATIVE -->
+
+            <div class="role-card">
+
+                <div class="role-icon">👤</div>
+
+                <h3>Class Representative</h3>
+
+                <p>
+                    Manage class assignments, announcements,
+                    examinations, and study materials.
+                </p>
+
+                <div class="role-buttons">
+
+                    <a href="#"
+                       onclick="return go('/cr-login')"
+                       class="btn btn-login">
+                        Login
+                    </a>
+
+                    <a href="#"
+                       onclick="return go('/cr-register')"
+                       class="btn btn-register">
+                        Register
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- FACULTY -->
+
+            <div class="role-card">
+
+                <div class="role-icon">👨‍🏫</div>
+
+                <h3>Faculty</h3>
+
+                <p>
+                    Add assignments, examinations,
+                    announcements, and study materials.
+                </p>
+
+                <div class="role-buttons">
+
+                    <a href="#"
+                       onclick="return go('/faculty-login')"
+                       class="btn btn-login">
+                        Login
+                    </a>
+
+                    <a href="#"
+                       onclick="return go('/faculty-register')"
+                       class="btn btn-register">
+                        Register
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FEATURES SECTION -->
+
+    <section class="section features-section" id="features">
+
+        <h2 class="section-heading">
+            Our Features
+        </h2>
+
+        <p class="section-description">
+            EduBeacon makes academic information easier
+            to manage and access.
+        </p>
+
+
+        <div class="features-container">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">📢</div>
+
+                <h3>Academic Announcements</h3>
+
+                <p>
+                    Get important college announcements
+                    and academic updates in one place.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">⏰</div>
+
+                <h3>Deadline Tracking</h3>
+
+                <p>
+                    Keep track of assignment deadlines
+                    and upcoming examinations.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">🚨</div>
+
+                <h3>Priority-Based Alerts</h3>
+
+                <p>
+                    Important academic information is
+                    organized based on its urgency.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">📚</div>
+
+                <h3>Study Materials</h3>
+
+                <p>
+                    Access notes and learning materials
+                    uploaded by authorized users.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">👥</div>
+
+                <h3>Role-Based Access</h3>
+
+                <p>
+                    Separate access for students,
+                    class representatives, and faculty.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">📊</div>
+
+                <h3>Easy Management</h3>
+
+                <p>
+                    Manage academic information through
+                    a simple and user-friendly dashboard.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ABOUT SECTION -->
+
+    <section class="section about-section" id="about">
+
+        <div class="about-content">
+
+            <h2 class="section-heading">
+                About EduBeacon
+            </h2>
+
+            <p>
+                EduBeacon is an intelligent priority-based academic
+                alert system developed to improve communication
+                between students, class representatives, and faculty.
+
+                The system provides a centralized platform for
+                academic announcements, assignments, examination
+                schedules, and study materials.
+
+                By organizing information based on priority,
+                EduBeacon helps students stay updated, manage
+                their academic responsibilities, and avoid
+                missing important deadlines.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <h3>🎓 EduBeacon</h3>
+
+        <p>
+            Intelligent Priority-Based Academic Alert System
+        </p>
+
+        <p>
+            © 2026 EduBeacon. All Rights Reserved.
+        </p>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        var selectedDept = '';
+
+        // Restore previously selected department
+
+        {% if session.get('selected_dept') %}
+
+            selectedDept = '{{ session.get("selected_dept") }}';
+
+            document.addEventListener('DOMContentLoaded', function() {
+
+                var select = document.getElementById('departmentSelect');
+
+                if (select) {
+                    select.value = selectedDept;
+                }
+
+            });
+
+        {% endif %}
+
+
+        // Save selected department
+
+        document.getElementById('departmentSelect').addEventListener('change', function() {
+
+            var dept = this.value;
+
+            if (!dept) {
+                selectedDept = '';
+                return;
+            }
+
+            fetch('/set-department', {
+
+                method: 'POST',
+
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+
+                body: 'department=' + encodeURIComponent(dept)
+
+            })
+
+            .then(function(response) {
+
+                selectedDept = dept;
+
+                document.getElementById('deptWarning').style.display = 'none';
+
+            });
+
+        });
+
+
+        // Redirect to login or registration
+
+        function go(path) {
+
+            if (!selectedDept) {
+
+                var warning = document.getElementById('deptWarning');
+
+                warning.style.display = 'block';
+
+                warning.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+
+                document.getElementById('departmentSelect').focus();
+
+                return false;
+
+            }
+
+            window.location.href =
+                path + '?dept=' + encodeURIComponent(selectedDept);
+
+            return false;
+
+        }
+
+    </script>
+
+</body>
+
+</html>
